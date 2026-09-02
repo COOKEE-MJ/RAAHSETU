@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recent Reports | RaahSetu</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  <header class="band reports-header">
+    <div class="wrap">
+      <a class="back-arrow" href="{{ url_for('home') }}" aria-label="Back to home">&#8592;</a>
+      <p class="wordmark">Recent Reports<span class="dot">.</span></p>
+      <p class="tagline">Delays reported by RaahSetu passengers.</p>
+    </div>
+  </header>
+
+  <main class="wrap reports-page">
+    {% if most_delayed %}
+    <section class="panel most-delayed" aria-labelledby="most-delayed-heading">
+      <p class="eyebrow">Most delayed route</p>
+      <h1 id="most-delayed-heading">{{ most_delayed.route_name }}</h1>
+      <p>{{ most_delayed.source }} to {{ most_delayed.destination }}</p>
+      <strong>{{ most_delayed.delay_minutes }} minutes late</strong>
+    </section>
+    {% endif %}
+
+    {% for category in categories %}
+    <section class="panel report-category" aria-labelledby="category-{{ loop.index }}">
+      <div class="category-heading">
+        <h2 id="category-{{ loop.index }}">{{ category.name }}</h2>
+        <span>{{ category.range_label }}</span>
+      </div>
+
+      {% if category.reports %}
+      <div class="report-list">
+        {% for report in category.reports %}
+        <article class="report-item">
+          <div>
+            <h3>{{ report.route_name }}</h3>
+            <p>{{ report.source }} to {{ report.destination }} &middot; {{ report.vehicle_type }}</p>
+            {% if report.note %}<p class="report-note">{{ report.note }}</p>{% endif %}
+            <small>Reported at {{ report.observed_time }} &middot; {{ report.report_count }} report{% if report.report_count != 1 %}s{% endif %} for this route</small>
+          </div>
+          <strong>{{ report.delay_minutes }} min</strong>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="empty-state">No reports in this delay range.</p>
+      {% endif %}
+    </section>
+    {% endfor %}
+  </main>
+</body>
+</html>

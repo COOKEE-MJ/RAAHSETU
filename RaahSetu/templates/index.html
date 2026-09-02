@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RaahSetu</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+  <header class="band">
+    <div class="wrap home-hero">
+      <div class="hero-copy">
+        <p class="wordmark">RAAHSETU<span class="dot">.</span></p>
+        <p class="tagline">Local transit, crowdsourced by the people who ride it.</p>
+      </div>
+      <img
+        class="hero-bus"
+        src="{{ url_for('static', filename='assets/bus-road.jpg') }}"
+        alt="City bus travelling on a road"
+      >
+    </div>
+  </header>
+
+  <main class="wrap">
+<section class="panel" aria-labelledby="search-heading">
+      <h2 id="search-heading">Find a route</h2>
+
+      <form id="search-form" class="route-form">
+        <div class="route-line">
+
+          <div class="field">
+            <label for="source">From</label>
+            <input type="text" id="source" name="source"
+              list="source-list"
+              placeholder="e.g. Railway Station"
+              autocomplete="off" required>
+            <datalist id="source-list"></datalist>
+          </div>
+
+          <div class="route-track" aria-hidden="true">
+            <span class="node"></span>
+            <span class="rail"></span>
+            <span class="node"></span>
+          </div>
+
+          <div class="field">
+            <label for="destination">To</label><input type="text" id="destination" name="destination"
+              list="destination-list"
+              placeholder="e.g. College"
+              autocomplete="off" required>
+            <datalist id="destination-list"></datalist>
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          Search routes
+        </button>
+      </form>
+    </section>
+
+    <section class="panel" id="results-section"
+      aria-labelledby="results-heading" hidden>
+
+      <h2 id="results-heading">Routes</h2>
+      <p id="results-summary" class="summary"></p>
+      <div id="results-list" class="ticket-list"></div>
+
+    </section>
+
+    <section class="panel" id="observation-section"
+      aria-labelledby="observation-heading">
+
+      <h2 id="observation-heading">Report a delay</h2>
+
+      <p class="hint">
+        Ridden a route recently? Log what you saw so the next commuter knows what to expect.
+      </p>
+
+      <form id="observation-form" class="slip">
+
+        <div class="field">
+          <label for="obs-route">Route</label>
+
+          <select id="obs-route" name="route_id" required>
+            <option value="" disabled selected>
+              Search first to pick a route
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="obs-delay">Delay, in minutes</label>
+
+          <input type="number"
+            id="obs-delay"
+            name="delay_minutes"
+            min="0"
+            step="1"
+            placeholder="0 if on time"
+            required>
+        </div>
+
+        <div class="field">
+          <label for="obs-note">
+            Note <span class="optional">(optional)</span>
+          </label>
+
+          <textarea id="obs-note"
+            name="note"
+            rows="2"
+            placeholder="Anything the next rider should know"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-secondary">
+          Submit report
+        </button>
+
+      </form>
+
+      <p id="observation-status"
+        class="status-msg"
+        role="status"
+        aria-live="polite"></p>
+
+      <a href="{{ url_for('reports_page') }}" class="btn btn-secondary">
+        Recent Reports
+      </a>
+
+    </section>
+
+  </main>
+
+  <footer class="wrap foot">
+    <p>Built for Build with Bharat 2.0 &middot; Team ZENITHe</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
